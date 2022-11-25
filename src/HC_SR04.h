@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-constexpr uint8_t INITIATE_MESSUREMENT_PULS_DURATION = 1; // Should be 10 but 1 works also, so why waste 9µs
+constexpr uint8_t INITIATE_MESSUREMENT_PULS_DURATION = 5; // Should be 10 but 5 works also, so why waste 9µs
 constexpr float TIMEOUT_THRESHOLD = 1.33f;
 
 class HC_SR04 {

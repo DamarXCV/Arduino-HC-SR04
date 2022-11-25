@@ -5,6 +5,7 @@ static uint32_t interruptStop = 0;
 static bool pinState = false;
 static bool interruptNewMessurement = false;
 static bool interruptsAttached = false;
+static uint32_t messuringStart = 0;
 
 static void interruptMessure()
 {
@@ -121,6 +122,7 @@ void HC_SR04::startInterruptMessurement()
     digitalWrite(triggerPin, HIGH);
     delayMicroseconds(INITIATE_MESSUREMENT_PULS_DURATION);
     digitalWrite(triggerPin, LOW);
+    messuringStart = micros();
 }
 
 /**
@@ -150,5 +152,13 @@ float HC_SR04::getInterruptMessurement()
  */
 bool HC_SR04::hasNewInterruptMessurement()
 {
-    return interruptNewMessurement;
+    if (interruptNewMessurement) {
+        return interruptNewMessurement;
+    } else if (((micros() - messuringStart) / 2.0f * speedOfSound) > 1300.0f && pinState) {
+        // Initiate messurement
+        digitalWrite(triggerPin, HIGH);
+        delayMicroseconds(INITIATE_MESSUREMENT_PULS_DURATION);
+        digitalWrite(triggerPin, LOW);
+    }
+    return false;
 }
